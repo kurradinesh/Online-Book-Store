@@ -1,0 +1,224 @@
+:root {
+    --brand-primary: #f7c948;
+    --brand-secondary: #3a4b6d;
+    --brand-glow: rgba(247, 201, 72, 0.28);
+    --surface: rgba(18, 25, 38, 0.92);
+    --surface-soft: rgba(24, 34, 55, 0.85);
+    --text-main: #f1f5f9;
+    --text-muted: rgba(241, 245, 249, 0.72);
+    --border-soft: rgba(255, 255, 255, 0.12);
+}
+
+body.account-dashboard {
+    background: radial-gradient(circle at top left, rgba(247, 201, 72, 0.08), transparent 28%), radial-gradient(circle at bottom right, rgba(58, 75, 109, 0.24), transparent 32%), #0b1220;
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+.account-navbar {
+    background: rgba(6, 14, 29, 0.95) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+}
+
+.account-logo-avatar {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f7c948, #d99204);
+    color: #09101a;
+    font-weight: 800;
+}
+
+.account-brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.account-brand-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.account-breadcrumb {
+    background: rgba(12, 20, 34, 0.82);
+}
+
+.account-card {
+    background: rgba(14, 24, 42, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(18px);
+}
+
+.account-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.account-card-body {
+    padding: 1.5rem;
+}
+
+.account-chip {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    font-size: 0.88rem;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.account-chip:hover {
+    transform: translateY(-1px);
+    background: rgba(247, 201, 72, 0.14);
+}
+
+.account-list-group .list-group-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    transition: transform 0.22s ease, background 0.22s ease;
+}
+
+.account-list-group .list-group-item:hover {
+    background: rgba(247, 201, 72, 0.12);
+    transform: translateX(2px);
+}
+
+.account-stat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    min-width: 145px;
+}
+
+.account-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.status-delivered { background: rgba(92, 191, 144, 0.14); color: #d9ffea; }
+.status-pending { background: rgba(247, 201, 72, 0.16); color: #fff5d4; }
+.status-cancelled { background: rgba(242, 91, 86, 0.16); color: #ffd7d4; }
+
+.account-btn-glow {
+    background: linear-gradient(135deg, #f7c948, #f2a62c);
+    border: none;
+    color: #09101a;
+    font-weight: 700;
+    box-shadow: 0 18px 40px rgba(247, 201, 72, 0.25);
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.account-btn-glow:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.account-summary-card {
+    background: linear-gradient(180deg, rgba(10, 24, 42, 0.96), rgba(19, 37, 64, 0.95));
+    border: 1px solid rgba(247, 201, 72, 0.12);
+}
+
+.table-account {
+    color: var(--text-main);
+}
+
+.table-account thead {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table-account tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.table-account td, .table-account th {
+    vertical-align: middle;
+    border-top: 0;
+}
+
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.form-control:focus, .form-select:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(247, 201, 72, 0.4);
+    box-shadow: 0 0 0 0.2rem rgba(247, 201, 72, 0.18);
+    color: var(--text-main);
+}
+
+.account-avatar-large {
+    width: 84px;
+    height: 84px;
+    border-radius: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f7c948, #d99204);
+    color: #09101a;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.account-empty-state {
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-muted);
+}
+
+.account-empty-state .icon-circle {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: rgba(247, 201, 72, 0.14);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #f7c948;
+    font-size: 2rem;
+}
+
+.account-tagline {
+    color: var(--text-muted);
+}
+
+.account-glow-outline {
+    box-shadow: 0 0 0 1px rgba(247, 201, 72, 0.07), 0 20px 35px rgba(247, 201, 72, 0.08);
+}
+
+@media (max-width: 767px) {
+    .account-navbar .nav-link { font-size: 0.9rem; }
+    .account-breadcrumb { padding: 1rem; }
+    .account-card-header { flex-direction: column; align-items: flex-start; }
+    .account-stat-badge { width: 100%; justify-content: center; }
+}
