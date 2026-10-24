@@ -688,6 +688,7 @@
       
       const response = await fetch(registerForm.action, {
         method: 'POST',
+        credentials: 'same-origin',
         body: formData
       });
 

@@ -681,6 +681,7 @@
 
       const response = await fetch(form.action, {
         method: form.method,
+        credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },

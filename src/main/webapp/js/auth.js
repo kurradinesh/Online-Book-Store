@@ -18,6 +18,22 @@ function getAppBaseUrl() {
   return `${window.location.origin}${contextPath}`;
 }
 
+function getAppContextPath() {
+  if (typeof window === 'undefined') return '';
+  const path = window.location.pathname || '';
+  const segments = path.split('/').filter(Boolean);
+  const appSegments = [];
+  for (const segment of segments) {
+    if (['index.html', 'login.html', 'register.html', 'orders.html', 'cart.html', 'pages', 'js', 'css', 'WEB-INF', 'META-INF'].includes(segment)) {
+      break;
+    }
+    appSegments.push(segment);
+  }
+  return appSegments.length ? `/${appSegments.join('/')}` : '';
+}
+
+window.getAppContextPath = getAppContextPath;
+
 // Retrieve registered user array from persistent local storage
 function getUsers() {
   const users = localStorage.getItem('booknook_users');
@@ -96,15 +112,10 @@ async function logout() {
       window.dispatchEvent(new Event('cartUpdated'));
     }
 
-    const redirectTarget = window.location.pathname.includes('admin.html') || window.location.pathname.includes('cart.html') || window.location.pathname.includes('admin.jsp') || window.location.pathname.includes('Cart.jsp')
-      ? 'index.html'
-      : 'login.html';
-
-    if (window.location.pathname.includes('admin.html') || window.location.pathname.includes('cart.html') || window.location.pathname.includes('admin.jsp') || window.location.pathname.includes('Cart.jsp')) {
-      window.location.href = 'index.html';
-    } else {
-      window.location.assign(redirectTarget);
-    }
+    const root = getAppContextPath() || '';
+    const isAccountPage = window.location.pathname.includes('admin.html') || window.location.pathname.includes('cart.html') || window.location.pathname.includes('admin.jsp') || window.location.pathname.includes('Cart.jsp') || window.location.pathname.includes('/pages/');
+    const redirectTarget = isAccountPage ? `${root}/index.html` : `${root}/login.html`;
+    window.location.assign(redirectTarget);
   };
 
   try {

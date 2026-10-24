@@ -3,9 +3,22 @@
  * Maps frontend application properties directly to Java Tomcat Servlets.
  */
 
-// 1. DYNAMIC BASE URL CALCULATION
-// Automatically resolves context paths like "http://localhost:8080/Online_Book_Store"
-const BOOKNOOK_API_BASE = window.location.origin + "/Online_Book_Store";
+const KNOWN_PATH_BREAKERS = ['index.html','login.html','register.html','orders.html','cart.html','pages','js','css','WEB-INF','META-INF'];
+
+function getAppContextPath() {
+  const path = window.location.pathname || '';
+  const segments = path.split('/').filter(Boolean);
+  const appSegments = [];
+  for (const segment of segments) {
+    if (KNOWN_PATH_BREAKERS.includes(segment)) {
+      break;
+    }
+    appSegments.push(segment);
+  }
+  return appSegments.length ? `/${appSegments.join('/')}` : '';
+}
+
+const BOOKNOOK_API_BASE = window.location.origin + getAppContextPath();
 
 /**
  * Global Profile State Synchronizer
@@ -28,7 +41,7 @@ function getCurrentUserProfile() {
  */
 async function getOrCreateBackendUser() {
   try {
-    const response = await fetch(`${BOOKNOOK_API_BASE}/AuthStatusServlet`);
+    const response = await fetch(`${BOOKNOOK_API_BASE}/AuthStatusServlet`, { credentials: 'same-origin' });
     if (!response.ok) return null;
     
     const status = await response.json();
@@ -59,6 +72,7 @@ async function fetchJson(url, options = {}) {
   
   const response = await fetch(url, {
     ...options,
+    credentials: options.credentials || 'same-origin',
     headers: {
       ...configHeaders
     }

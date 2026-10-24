@@ -272,6 +272,7 @@ async function recalculateAndDisplayCategoryBadges() {
 
 // Master execution thread listener assembly activation lifecycle
 document.addEventListener('DOMContentLoaded', async () => {
+  await getOrCreateBackendUser();
   // Ensure background asynchronous updates clear sequencing loops independently
   await updateStatsCountersDataLayers();
   await populateAuthorsSelectionMenu();
