@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: booknook-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Bujjibabu@7732
+      MYSQL_DATABASE: booknook_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/booknook_complete_schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pBujjibabu@7732"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: booknook-backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: booknook_db
+      DB_USER: root
+      DB_PASSWORD: Bujjibabu@7732
+      DB_SSL_MODE: DISABLED
+      JWT_SECRET: BookNookSecureEcommerceJwtSecretKeyThatIsAtLeast32BytesLongForSha256!
+      CORS_ALLOWED_ORIGINS: http://localhost,http://localhost:80,http://localhost:5173
+    ports:
+      - "8080:8080"
+    volumes:
+      - backend_uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: booknook-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  db_data:
+  backend_uploads:

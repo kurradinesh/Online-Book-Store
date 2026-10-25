@@ -134,19 +134,19 @@ In Windows Command Prompt:
 cd c:\eclipsecodes\Online_Book_Store\backend
 mvn clean package -DskipTests
 ```
-This produces an executable JAR in `backend/target/bookstore-api-1.0.0.jar`.
+This produces an executable JAR in `backend/target/bookstore-backend-1.0.0.jar`.
 
 ### 2. Upload JAR to VPS
 Using SCP or SFTP (e.g. WinSCP or FileZilla):
 ```cmd
-scp backend/target/bookstore-api-1.0.0.jar booknook@YOUR_SERVER_IP:/home/booknook/
+scp backend/target/bookstore-backend-1.0.0.jar booknook@YOUR_SERVER_IP:/home/booknook/
 ```
 
 ### 3. Place JAR in standard deployment directory on VPS
 On the VPS:
 ```bash
 mkdir -p /opt/booknook
-cp /home/booknook/bookstore-api-1.0.0.jar /opt/booknook/bookstore-api.jar
+cp /home/booknook/bookstore-backend-1.0.0.jar /opt/booknook/bookstore-api.jar
 chown -R booknook:booknook /opt/booknook
 ```
 

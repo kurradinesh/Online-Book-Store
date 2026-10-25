@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { getImageUrl } from '../services/api';
 
 export default function Cart() {
   const { cartItems, subtotal, totalCount, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -69,7 +70,7 @@ export default function Cart() {
                 {/* Book Info */}
                 <div className="item-meta-cell">
                   <img
-                    src={item.productImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
+                    src={getImageUrl(item.productImage) || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
                     alt={item.productName}
                     className="item-table-img"
                   />

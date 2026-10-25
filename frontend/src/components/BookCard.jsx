@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { getImageUrl } from '../services/api';
 
 export default function BookCard({ book }) {
   const { addToCart } = useCart();
@@ -47,7 +48,7 @@ export default function BookCard({ book }) {
       <Link to={`/book/${book.id}`} className="book-cover-link">
         <div className="book-cover-container" style={{ position: 'relative', overflow: 'hidden', height: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fafafa' }}>
           <img
-            src={book.imageUrl || fallbackImage}
+            src={getImageUrl(book.imageUrl) || fallbackImage}
             alt={book.title}
             className="book-cover-img"
             loading="lazy"

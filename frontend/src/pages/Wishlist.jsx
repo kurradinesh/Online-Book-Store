@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWishlist } from '../context/WishlistContext';
+import { getImageUrl } from '../services/api';
 
 export default function Wishlist() {
   const { wishlistItems, removeFromWishlist, moveToCart } = useWishlist();
@@ -37,7 +38,7 @@ export default function Wishlist() {
             <Link to={`/book/${item.productId}`}>
               <div className="wishlist-cover-box">
                 <img
-                  src={item.productImage || fallbackImage}
+                  src={getImageUrl(item.productImage) || fallbackImage}
                   alt={item.productName}
                   className="wishlist-cover-img"
                   onError={(e) => { e.target.src = fallbackImage; }}

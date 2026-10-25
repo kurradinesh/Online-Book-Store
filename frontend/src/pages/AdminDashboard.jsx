@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../services/api';
+import { api, getImageUrl } from '../services/api';
 
 export default function AdminDashboard() {
   const { user, isAuthenticated, isAdmin } = useAuth();
@@ -395,7 +395,7 @@ export default function AdminDashboard() {
                   <tr key={b.id}>
                     <td>
                       <img
-                        src={b.imageUrl || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
+                        src={getImageUrl(b.imageUrl) || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
                         alt={b.title}
                         className="table-book-thumb"
                       />
@@ -689,7 +689,7 @@ export default function AdminDashboard() {
                       marginTop: '4px'
                     }}>
                       <img
-                        src={imagePreview || bookForm.imageUrl}
+                        src={imagePreview || getImageUrl(bookForm.imageUrl)}
                         alt="Preview"
                         style={{ width: '56px', height: '78px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #cbd5e1' }}
                         onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'; }}

@@ -1,10 +1,25 @@
 // Centralized HTTP API Client for BookNook
-const BASE_URL = '/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://online-book-store-backend-6ahp.onrender.com' : '');
+let cleanBase = (rawApiUrl || '').trim().replace(/\/+$/, '');
+if (cleanBase.endsWith('/api')) {
+  cleanBase = cleanBase.slice(0, -4);
+}
+
+export const API_BASE = cleanBase;
+export const BASE_URL = cleanBase ? `${cleanBase}/api` : '/api';
+
+export function getImageUrl(path) {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  const baseUrl = API_BASE || '';
+  return `${baseUrl}${path.startsWith('/') ? path : '/' + path}`;
+}
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem('token');
   
   const headers = {
+    'Accept': 'application/json',
     ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
     ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
     ...options.headers,
@@ -15,30 +30,60 @@ async function request(endpoint, options = {}) {
     headers,
   };
 
+  let response;
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, config);
-    
-    // Handle 401 Unauthorized
-    if (response.status === 401 && !endpoint.startsWith('/auth/login') && !endpoint.startsWith('/auth/register')) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login?expired=true';
-      }
-    }
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      const errorMessage = data?.message || `Request failed with status ${response.status}`;
-      throw new Error(errorMessage);
-    }
-
-    return data;
-  } catch (error) {
-    console.error(`API Error on [${options.method || 'GET'} ${endpoint}]:`, error.message);
-    throw error;
+    response = await fetch(`${BASE_URL}${endpoint}`, config);
+  } catch (networkError) {
+    console.error(`Network or CORS Error on [${options.method || 'GET'} ${endpoint}]:`, networkError.message);
+    throw new Error(
+      "Unable to connect to the BookNook server. Please verify your internet connection or check if the backend service is starting up."
+    );
   }
+
+  // Handle 401 Unauthorized for protected endpoints
+  if (response.status === 401 && !endpoint.startsWith('/auth/login') && !endpoint.startsWith('/auth/register')) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    if (window.location.pathname !== '/login') {
+      window.location.href = '/login?expired=true';
+    }
+  }
+
+  // Read body text safely first to avoid "Unexpected end of JSON input" on empty responses or HTML error pages
+  const rawText = await response.text();
+  let data = null;
+  if (rawText && rawText.trim().length > 0) {
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      // Content is not valid JSON (e.g. HTML error page or raw string)
+      data = null;
+    }
+  }
+
+  if (!response.ok) {
+    let errorMessage;
+    if (data && data.message) {
+      errorMessage = data.message;
+    } else if (rawText && rawText.length < 200 && !rawText.trim().startsWith('<')) {
+      errorMessage = rawText.trim();
+    } else if (response.status === 401) {
+      errorMessage = "Invalid email or password. Please try again.";
+    } else if (response.status === 403) {
+      errorMessage = "Access forbidden or request rejected by CORS policy.";
+    } else if (response.status === 404) {
+      errorMessage = `The requested endpoint (${endpoint}) was not found.`;
+    } else if (response.status === 502 || response.status === 503 || response.status === 504) {
+      errorMessage = "The BookNook backend service is spinning up or temporarily unavailable. Please retry in a few seconds.";
+    } else if (response.status >= 500) {
+      errorMessage = "An internal server error occurred. Please try again later.";
+    } else {
+      errorMessage = `Request failed with status ${response.status}`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return data !== null ? data : { success: true, data: null };
 }
 
 export const api = {

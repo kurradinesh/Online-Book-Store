@@ -32,24 +32,26 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     const res = await api.auth.login(credentials);
-    if (res.data && res.data.token) {
+    if (res && res.data && res.data.token) {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data));
       setToken(res.data.token);
       setUser(res.data);
       return res.data;
     }
+    throw new Error(res?.message || "Authentication succeeded but no security token was received.");
   };
 
   const register = async (userData) => {
     const res = await api.auth.register(userData);
-    if (res.data && res.data.token) {
+    if (res && res.data && res.data.token) {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data));
       setToken(res.data.token);
       setUser(res.data);
       return res.data;
     }
+    throw new Error(res?.message || "Registration succeeded but no security token was received.");
   };
 
   const logout = () => {

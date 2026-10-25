@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { getImageUrl } from '../services/api';
 
 export default function CartDrawer() {
   const { cartItems, subtotal, totalCount, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart } = useCart();
@@ -74,7 +75,7 @@ export default function CartDrawer() {
               {cartItems.map((item) => (
                 <div key={item.id} className="drawer-item-row">
                   <img
-                    src={item.productImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
+                    src={getImageUrl(item.productImage) || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
                     alt={item.productName}
                     className="drawer-item-img"
                   />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { api } from '../services/api';
+import { api, getImageUrl } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
@@ -149,7 +149,7 @@ export default function BookDetails() {
         <div className="amazon-product-gallery">
           <div className="amazon-main-image-wrap">
             <img
-              src={book.imageUrl || fallbackImage}
+              src={getImageUrl(book.imageUrl) || fallbackImage}
               alt={book.title}
               className="amazon-main-image"
               onError={(e) => { e.target.src = fallbackImage; }}

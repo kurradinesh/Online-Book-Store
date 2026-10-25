@@ -14,14 +14,20 @@ export default function Login() {
 
   const redirectUrl = searchParams.get('redirect') || '/';
 
+  React.useEffect(() => {
+    if (searchParams.get('expired') === 'true') {
+      setError("Your session has expired. Please sign in again.");
+    }
+  }, [searchParams]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
     try {
-      const user = await login({ email, password });
-      if (user.role?.toLowerCase() === 'admin') {
+      const user = await login({ email: email.trim(), password });
+      if (user && user.role?.toLowerCase() === 'admin') {
         navigate('/admin');
       } else {
         navigate(redirectUrl === 'checkout' ? '/checkout' : '/');

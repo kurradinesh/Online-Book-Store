@@ -1,4 +1,5 @@
 @echo off
+set "PATH=%SystemRoot%\System32;%SystemRoot%;%PATH%"
 title BookNook Frontend - React + Vite
 color 0B
 

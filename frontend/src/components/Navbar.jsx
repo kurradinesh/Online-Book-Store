@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
-import { api } from '../services/api';
+import { api, getImageUrl } from '../services/api';
 
 export default function Navbar() {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
@@ -191,7 +191,7 @@ export default function Navbar() {
                       onClick={() => setShowSearchDropdown(false)}
                     >
                       <img
-                        src={book.imageUrl || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
+                        src={getImageUrl(book.imageUrl) || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=120&q=80'}
                         alt={book.title}
                         className="search-item-img"
                       />
